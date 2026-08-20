@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Vivelo en 3D | Adidas Terrex Anylander en WebAR</title>
+
+  <script
+    type="module"
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js">
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      /* Identidad Visual: Verde pastoso y tonos tierra */
+      --color-principal: #4A6B5B; 
+      --color-tierra: #8C6D53;
+      --color-secundario: #F7F5F0;
+      --color-gris: #E8E5DF;
+      --color-promocion: #A63A2B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: var(--color-secundario);
+      color: #2C2C2C;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--color-principal);
+      color: var(--color-secundario);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid var(--color-tierra);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      letter-spacing: 3px;
+    }
+
+    main {
+      width: min(1100px, 92%);
+      margin: 35px auto;
+    }
+
+    .producto {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 35px;
+      align-items: center;
+    }
+
+    .visor {
+      min-height: 500px;
+      background-color: var(--color-gris);
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 500px;
+      background-color: var(--color-gris);
+    }
+
+    .ar-button {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      border: none;
+      border-radius: 30px;
+      padding: 14px 24px;
+      background-color: var(--color-principal);
+      color: var(--color-secundario);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+    .informacion h2 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+      color: var(--color-principal);
+    }
+
+    .descripcion {
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+    }
+
+    .beneficios {
+      margin: 20px 0;
+      padding-left: 22px;
+    }
+
+    .beneficios li {
+      margin-bottom: 8px;
+    }
+
+    /* Caja del heurístico de anclaje */
+    .bloque-anclaje {
+      background-color: #EFECE6;
+      border: 2px dashed var(--color-tierra);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .bloque-anclaje h3 {
+      color: var(--color-principal);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .bloque-anclaje p {
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      color: #444;
+    }
+
+    .extra-beneficio {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--color-tierra);
+      margin-top: 12px;
+      margin-bottom: 15px;
+    }
+
+    .precio-anterior {
+      color: #666666;
+      font-size: 1.05rem;
+      text-decoration: line-through;
+    }
+
+    .precio-actual {
+      color: var(--color-promocion);
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .cta {
+      display: inline-block;
+      background-color: var(--color-tierra);
+      color: var(--color-secundario);
+      padding: 15px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: opacity 0.2s ease, background-color 0.2s ease;
+      text-align: center;
+      width: 100%;
+    }
+
+    .cta:hover {
+      background-color: var(--color-principal);
+    }
+
+    .qr-section {
+      margin-top: 45px;
+      padding: 30px;
+      background-color: var(--color-gris);
+      border-radius: 18px;
+      text-align: center;
+      border: 1px solid #D5D0C7;
+    }
+
+    #qrCode {
+      display: flex;
+      justify-content: center;
+      margin: 20px auto;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 25px;
+      background-color: var(--color-principal);
+      color: var(--color-secundario);
+      text-align: center;
+      border-top: 4px solid var(--color-tierra);
+    }
+
+    @media (max-width: 800px) {
+      .producto {
+        grid-template-columns: 1fr;
+      }
+
+      .visor,
+      model-viewer {
+        min-height: 400px;
+        height: 400px;
+      }
+
+      .informacion h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>VIVELO EN 3D</h1>
+    <p>Conecta con la naturaleza, explora sin límites</p>
+  </header>
+
+  <main>
+    <section class="producto">
+      <div class="visor">
+        <model-viewer
+          src="modelo.glb"
+          alt="Modelo tridimensional de zapatillas Adidas Terrex Anylander para senderismo"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-placement="floor"
+          ar-scale="auto"
+          camera-controls
+          auto-rotate
+          shadow-intensity="1.2"
+          exposure="1"
+          touch-action="pan-y">
+
+          <button class="ar-button" slot="ar-button" type="button">
+            Ver en mi espacio
+          </button>
+        </model-viewer>
+      </div>
+
+      <div class="informacion">
+        <h2>Adidas Terrex Anylander</h2>
+
+        <p class="descripcion">
+          Zapatillas de senderismo diseñadas para hombres que buscan superar cualquier terreno. 
+          Combinan tecnología avanzada con un diseño robusto, ideal para tus aventuras al aire libre.
+        </p>
+
+        <ul class="beneficios">
+          <li><strong>Comodidad:</strong> Amortiguación superior para largas caminatas.</li>
+          <li><strong>Agarre y estabilidad:</strong> Suela de gran tracción en superficies difíciles.</li>
+          <li><strong>Resistencia:</strong> Materiales duraderos contra el desgaste y clima exterior.</li>
+          <li><strong>Versatilidad:</strong> Perfectas tanto para montaña como para uso urbano activo.</li>
+        </ul>
+
+        <!-- Bloque del Heurístico de Anclaje -->
+        <div class="bloque-anclaje">
+          <h3>🎯 DESBLOQUEA TU BENEFICIO</h3>
+          <p>Explora nuestros modelos 3D y lleva la experiencia a tu espacio. Al completar la experiencia de Realidad Aumentada, desbloqueas un precio especial para tus Terrex.</p>
+          
+          <p class="precio-anterior">Antes: $205.000</p>
+          <p class="precio-actual">Ahora: $133.431</p>
+
+          <div class="extra-beneficio">
+            🎁 TU EXPERIENCIA CONTINÚA<br>
+            Recibe 10% de descuento en tu próxima compra.
+          </div>
+
+          <a
+            class="cta"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer">
+            [ DESBLOQUEAR BENEFICIO ]
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="qr-section">
+      <h2>Explora las zapatillas desde tu celular</h2>
+      <p>
+        Escanea el código QR para abrir la experiencia y usar la realidad
+        aumentada desde un dispositivo compatible.
+      </p>
+
+      <div id="qrCode"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Vivelo en 3D · Experiencia comercial WebAR</p>
+  </footer>
+
+  <script>
+    new QRCode(document.querySelector("#qrCode"), {
+      text: window.location.href,
+      width: 180,
+      height: 180,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  </script>
+</body>
+</html>
